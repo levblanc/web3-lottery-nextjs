@@ -3,6 +3,7 @@ import Image from 'next/image';
 import styles from '../styles/Home.module.css';
 import Header from '../components/Header';
 // import MannualHeader from '../components/MannualHeader';
+import LotteryEntrance from '../components/LotteryEntrance';
 
 export default function Home() {
   return (
@@ -12,8 +13,9 @@ export default function Home() {
         <meta name="description" content="Smart contract lottery" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {/* <MannualHeader /> */}
       <Header />
+      {/* <MannualHeader /> */}
+      <LotteryEntrance />
     </div>
   );
 }
