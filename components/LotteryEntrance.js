@@ -1,4 +1,4 @@
-import { useMoralis, useWeb3Contract } from 'react-moralis';
+import { useMoralis, useWeb3Contract, useMoralisQuery } from 'react-moralis';
 import { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 import { useNotification } from '@web3uikit/core';
@@ -28,7 +28,11 @@ export default function LotteryEntrance() {
     params: {},
   });
 
-  const { runContractFunction: enterRaffle } = useWeb3Contract({
+  const {
+    runContractFunction: enterRaffle,
+    isLoading,
+    isFetching,
+  } = useWeb3Contract({
     abi,
     contractAddress: raffleAddress,
     functionName: 'enterRaffle',
@@ -99,16 +103,33 @@ export default function LotteryEntrance() {
   };
 
   return (
-    <div>
-      <div>Hi from LotteryEntrance </div>
+    <div className="py-5 px-5">
+      <div className="text-xl mb-5">Welcome to the Lottery!</div>
       {raffleAddress ? (
         <div>
-          <button onClick={enterRaffleHandler}>Enter Raffle</button>
-          <div>
-            Entrance Fee: {ethers.utils.formatUnits(entranceFee, 'ether')} ETH
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-5 mb-5 rounded ml-auto"
+            onClick={enterRaffleHandler}
+            disabled={isLoading || isFetching}
+          >
+            {isLoading || isFetching ? (
+              <div className="animate-spin spinner-border h-8 w-8 border-b-2 rounded-full"></div>
+            ) : (
+              <div>Enter Raffle</div>
+            )}
+          </button>
+          <div className="flex text-lg">
+            <div className="w-40 mr-2">Entrance Fee:</div>
+            <div>{ethers.utils.formatUnits(entranceFee, 'ether')} ETH</div>
           </div>
-          <div>Number Of Players: {numOfPlayers}</div>
-          <div>Recent Winner: {recentWinner}</div>
+          <div className="flex text-lg">
+            <div className="w-40 mr-2">Number Of Players:</div>
+            <div>{numOfPlayers}</div>
+          </div>
+          <div className="flex text-lg">
+            <div className="w-40 mr-2">Recent Winner:</div>
+            <div>{recentWinner}</div>
+          </div>
         </div>
       ) : (
         <div>No Raffle Address Detected</div>
